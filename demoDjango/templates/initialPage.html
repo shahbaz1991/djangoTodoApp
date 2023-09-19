@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% block page_content %} {% url login_url as login %}
+{% url register_url as register %}
+<body class="bg d-flex justify-content-center align-items-center">
+  <div class="card mb-3 bg-warning">
+    <h3 class="card-header">
+      <strong>Welcome to the DJANGO TODO-APPLICATION</strong>
+    </h3>
+    <div class="card-body">
+      <h5 class="card-title">The Code is written in Django</h5>
+      <h6 class="card-subtitle text-muted">
+        with support of Bootswatch template
+      </h6>
+    </div>
+    <div class="card-body">
+      <a href="login" class="btn btn-light">Login</a>
+      <a href="register" class="btn btn-light"> Register </a>
+    </div>
+    <div class="card-footer text-muted">Developed by Sk. Shahbaz Ali</div>
+  </div>
+</body>
+{% endblock %}

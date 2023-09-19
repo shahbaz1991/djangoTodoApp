@@ -1,0 +1,30 @@
+{% extends "base.html" %} {% block page_content %}
+<body class="bg d-flex justify-content-center align-items-center">
+  <div class="card mb-3 bg-warning" style="width: 300">
+    <h3 class="card-header"><strong>LOGIN</strong></h3>
+    <div class="card-body mb-0">
+      {% if error %}
+      <p class="card-header">{{ error }}</p>
+      {% endif %} {% if form.errors %}
+      <p class="card-header">
+        Your username and password didn't match. Please try again.
+      </p>
+      {% endif %}
+      <form class="form-group" method="post" action="">
+        {% csrf_token %}
+        <div class="form-group mb-0">
+          {% comment %} <label class="form-label">Username</label>
+          <p>{{form.username}}</p>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Password</label>
+          <p>{{form.password}}</p>
+          {% endcomment %} {{form.as_p}}
+        </div>
+        <input type="hidden" name="next" value="{{ next }}" />
+        <button type="submit" class="btn btn-outline-primary">Login</button>
+      </form>
+    </div>
+  </div>
+</body>
+{% endblock %}

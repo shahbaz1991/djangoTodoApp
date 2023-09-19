@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block page_content %}
+<body class="body">
+  <div class="bg d-flex justify-content-center align-items-center">
+    <div
+      class="card bg-warning"
+      style="
+        width: 300px; 
+        margin-top: 20px;
+        margin-bottom: 15px"
+    >
+      <h3 class="card-header"><strong>REGISTER</strong></h3>
+      <div class="card-body">
+        {% if error %}
+        <p class="card-header">{{ error }}</p>
+        {% endif %}
+        <form action="" method="post">
+          {% csrf_token %}
+          <fieldset>
+            <div class="form-group">{{form.as_p}}</div>
+            <input
+              type="submit"
+              class="btn btn-outline-primary"
+              value="Register"
+            />
+          </fieldset>
+        </form>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}

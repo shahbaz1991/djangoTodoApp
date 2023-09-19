@@ -1,0 +1,534 @@
+{% extends "base.html" %} {% block page_content %}
+<body class="bg d-flex justify-content-center">
+  <div class="row" style="width: 98%; position: absolute; top: 3px">
+    <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+      <div class="container-fluid">
+        <a
+          class="navbar-brand ml-3"
+          href="#"
+          data-toggle="modal"
+          data-target="#UserDetailsModal"
+          >{{user.name}}
+        </a>
+        <button
+          class="badge bg-primary"
+          href="#"
+          data-toggle="modal"
+          data-target="#AddTodo"
+        >
+          Add Task +
+        </button>
+        <ul class="navbar-nav">
+          <li class="nav-item mr-4">
+            <a
+              class="nav-link active"
+              {% comment %} href="http://127.0.0.1:8000/todoApp/login/" {% endcomment %}
+              data-toggle="modal"
+              data-target="#LogOutModal"
+              >Log out
+              <span class="visually-hidden">(current)</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div
+      class="card border-warning mt-2"
+      style="
+        max-width: 96%;
+        margin: auto;
+        background-color: transparent;
+        padding-bottom: 10px;
+      "
+    >
+      <div class="card-header p-0 mt-1 mb-2">
+        <h2>Today's Task</h2>
+      </div>
+      <table class="table table-hover">
+        <tbody>
+          {% if todoDetails|length > 0 %} {% for x in todoDetails %}
+          <tr>
+            <div
+              class="card-body d-flex justify-content-between align-items-center p-0"
+            >
+              <div style="overflow: hidden">
+                <h5
+                  class="{% if x.completed %} form-control is-valid {% else %}card-title{%endif%}"
+                  style="
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    background-color: transparent;
+                  "
+                >
+                  {{ x.title }}
+                </h5>
+              </div>
+              <div class="d-flex justify-content-between">
+                <button
+                  class="badge bg-info m-0"
+                  data-toggle="modal"
+                  data-target="#ShowDetails{{x.id}}"
+                >
+                  Details
+                </button>
+                <button
+                  class="badge bg-warning m-0"
+                  data-toggle="modal"
+                  data-target="#UpdateModal{{x.id}}"
+                >
+                  Update
+                </button>
+                <button
+                  class="badge bg-danger m-0"
+                  data-toggle="modal"
+                  data-target="#DeleteModal"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </tr>
+          <div class="modal" id="DeleteModal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Delete Task</h5>
+                </div>
+                <div class="modal-body">
+                  <h5>Are you sure you want to delete this task</h5>
+                </div>
+                <div class="modal-footer">
+                  <a href="delete/{{x.id}}" class="btn btn-primary">Yes</a>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal" id="ShowDetails{{x.id}}">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{x.title}}</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>{{x.description}}</p>
+                </div>
+                <div class="modal-footer justify-content-start pb-0">
+                  <div
+                    class="d-flex justify-content-between m-0 p-0"
+                    style="width: 100%"
+                  >
+                    <div class="d-flex">
+                      <h6 class="mt-1">Status :</h6>
+                      <p class="ml-2">
+                        {%if x.completed %} Completed {%else%} Pending {%endif%}
+                      </p>
+                    </div>
+                    <div class="d-flex">
+                      <h6 class="mt-1">Dated :</h6>
+                      <p class="ml-2">{{x.dateTime}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal" id="UpdateModal{{x.id}}">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Update Task</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="modal-body pt-0">
+                  <form method="post" action="update/{{x.id}}/">
+                    {% csrf_token %}
+                    <fieldset>
+                      <div class="form-group">
+                        <label for="id_title" class="form-label">Title</label>
+                        <input
+                          value="{{x.title}}"
+                          type="text"
+                          name="title"
+                          class="form-control"
+                          id="id_title"
+                          aria-describedby="title"
+                          placeholder="Enter title"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="id_description" class="form-label"
+                          >Description
+                        </label>
+                        <textarea
+                          class="form-control"
+                          id="id_description"
+                          name="description"
+                          rows="3"
+                          style="height: 86px"
+                          placeholder="Enter task description"
+                          required
+                        >
+{{x.description}}</textarea
+                        >
+                      </div>
+                      <div class="form-group">
+                        <label for="id_dateTime" class="form-label"
+                          >Date-Time</label
+                        >
+                        <input
+                          value="{{x.dateTime|date:'Y-m-d'}}T{{x.dateTime|date:'H:i'}}"
+                          min="{{minDate|date:'Y-m-d'}}T{{minDate|date:'H:i'}}"
+                          type="datetime-local"
+                          name="dateTime"
+                          class="form-control"
+                          id="id_dateTime"
+                          placeholder="Enter Date-Time"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="id_completed" class="form-check-label"
+                          >Status</label
+                        >
+                        <input type="checkbox" name="completed"
+                        class="form-check-input" id="id_completed"
+                        aria-describedby="completed" style="margin-left: 5px"
+                        {%if x.completed %} checked {% else %} '' {%endif%} />
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        Update
+                      </button>
+                    </fieldset>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endfor %} {% else %}
+          <tr>
+            <h4>Nothing added yet !!!</h4>
+          </tr>
+          {% endif %}
+        </tbody>
+      </table>
+    </div>
+
+    {% if otherList|length > 0 %} {% for key, value in otherList.items %}
+    <div
+      class="card border-warning mt-2"
+      style="
+        max-width: 96%;
+        margin: auto;
+        background-color: transparent;
+        padding-bottom: 10px;
+      "
+    >
+      <div class="card-header p-0 mt-1 mb-2">
+        <h2>{{key}}</h2>
+      </div>
+      {% for y in value %}
+
+      <table class="table table-hover">
+        <tbody>
+          <tr class="table-warning">
+            <div
+              class="card-body d-flex justify-content-between align-items-center p-0"
+            >
+              <div style="overflow: hidden">
+                <h5
+                  class="{% if y.completed %} form-control is-valid {% else %}card-title{%endif%}"
+                  style="
+                    overflow: hidden;
+                    white-space: nowrap;
+                    text-overflow: ellipsis;
+                    background-color: transparent;
+                  "
+                >
+                  {{ y.title }}
+                </h5>
+              </div>
+              <div class="d-flex justify-content-between">
+                <button
+                  class="badge bg-info"
+                  data-toggle="modal"
+                  data-target="#ShowDetails{{y.id}}"
+                >
+                  Details
+                </button>
+                <button
+                  class="badge bg-warning"
+                  data-toggle="modal"
+                  data-target="#UpdateModal{{y.id}}"
+                >
+                  Update
+                </button>
+                <button
+                  class="badge bg-danger"
+                  data-toggle="modal"
+                  data-target="#DeleteModal"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+          </tr>
+          <div class="modal" id="DeleteModal">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Delete Task</h5>
+                </div>
+                <div class="modal-body">
+                  <h5>Are you sure you want to delete this task</h5>
+                </div>
+                <div class="modal-footer">
+                  <a href="delete/{{y.id}}" class="btn btn-primary">Yes</a>
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    No
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal" id="ShowDetails{{y.id}}">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">{{y.title}}</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <p>{{y.description}}</p>
+                </div>
+                <div class="modal-footer justify-content-start pb-0">
+                  <div
+                    class="d-flex justify-content-between m-0 p-0"
+                    style="width: 100%"
+                  >
+                    <div class="d-flex">
+                      <h6 class="mt-1">Status :</h6>
+                      <p class="ml-2">
+                        {%if y.completed %} Completed {%else%} Pending {%endif%}
+                      </p>
+                    </div>
+                    <div class="d-flex">
+                      <h6 class="mt-1">Dated :</h6>
+                      <p class="ml-2">{{y.dateTime}}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal" id="UpdateModal{{y.id}}">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">Update Task</h5>
+                  <button
+                    type="button"
+                    class="btn-close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true"></span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form method="post" action="update/{{y.id}}/">
+                    {% csrf_token %}
+                    <fieldset>
+                      <div class="form-group">
+                        <label for="id_title" class="form-label">Title</label>
+                        <input
+                          value="{{y.title}}"
+                          type="text"
+                          name="title"
+                          class="form-control"
+                          id="id_title"
+                          aria-describedby="title"
+                          placeholder="Enter title"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="id_description" class="form-label"
+                          >Description
+                        </label>
+                        <textarea
+                          class="form-control"
+                          id="id_description"
+                          name="description"
+                          rows="3"
+                          style="height: 86px"
+                          placeholder="Enter task description"
+                          required
+                        >
+{{y.description}}
+                        </textarea>
+                      </div>
+                      <div class="form-group">
+                        <label for="id_dateTime" class="form-label"
+                          >Date-Time</label
+                        >
+                        <input
+                          value="{{y.dateTime|date:'Y-m-d'}}T{{y.dateTime|date:'H:i'}}"
+                          min="{{minDate|date:'Y-m-d'}}T{{minDate|date:'H:i'}}"
+                          type="datetime-local"
+                          name="dateTime"
+                          class="form-control"
+                          id="id_dateTime"
+                          placeholder="Enter Date-Time"
+                          required
+                        />
+                      </div>
+                      <div class="form-group">
+                        <label for="id_completed" class="form-check-label"
+                          >Status</label
+                        >
+                        <input type="checkbox" name="completed"
+                        class="form-check-input" id="id_completed"
+                        aria-describedby="completed" style="margin-left: 5px"
+                        {%if y.completed %} checked {%else%} '' {%endif%} />
+                      </div>
+                      <button type="submit" class="btn btn-primary">
+                        Update
+                      </button>
+                    </fieldset>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tbody>
+      </table>
+      {% endfor %}
+    </div>
+    {% endfor %} {% endif %}
+    <div class="modal" id="AddTodo">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Add a Task</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form method="post" action="">
+              {% csrf_token %}
+              <fieldset>
+                <div class="form-group">{{form.as_p}}</div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </fieldset>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="UserDetailsModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header pt-2 pb-1">
+            <h5 class="modal-title">Account Details</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true"></span>
+            </button>
+          </div>
+          <div class="modal-body pt-2 pb-0">
+            <div class="d-flex butB">
+              <h6 class="but mr-2">Name :</h6>
+              <p class="but" style="height:100%">{{user.name}}</p>
+            </div>
+            <div class="d-flex">
+              <h6>Email :</h6>
+              <p>{{user.email}}</p>
+            </div>
+            <div class="d-flex">
+              <h6>Mobile :</h6>
+              <p>{{user.mobile}}</p>
+            </div>
+            <div class="d-flex">
+              <h6>Username :</h6>
+              <p>{{user.username}}</p>
+            </div>
+          </div>
+          <div class="modal-footer justify-content-start">
+            <div class="d-flex m-0 p-0">
+              <h6>Created on :</h6>
+              <p>{{ user.created_on}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="modal" id="LogOutModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">LogOut</h5>
+          </div>
+          <div class="modal-body">
+            <h5>Are you sure you want to Logout</h5>
+          </div>
+          <div class="modal-footer">
+            <a href="{% url 'logout_url' %}" class="btn btn-primary">Yes</a>
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              No
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+{% endblock %}
