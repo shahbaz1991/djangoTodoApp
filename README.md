@@ -1,8 +1,13 @@
-This is a simple TODO application using DJANGO.<br>
-There are three apps Login, Register, TodoList.<br>
-Login accepts credentials and verifies those from Register model.<br>
-TodoList shows the date wise task that needs to be done.<br>
-Django authentication is not used as i am not authenticating the user.<br>
+This is a simple TODO application using DJANGO.
+<br>
+There are three apps Login, Register, TodoList.
+<br>
+Login accepts credentials and verifies those from Register model.
+<br>
+TodoList shows the date wise task that needs to be done.
+<br>
+Django authentication is not used as i am not authenticating the user.
+<br>
 Bootswatch Template is used for designing 
 <br>
 <br>
