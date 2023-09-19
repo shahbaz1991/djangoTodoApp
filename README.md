@@ -23,4 +23,4 @@ Below is the main page of the application where we can add, view, update as well
 Note:
 <br>
 No saparate html file is created for operations (add, update, delete)<br>
-A modal is used and using view methods user is updating the model and same is visible after operations are performed.
+A modal is used and using view methods user is updating the model and same page is visible after operations are performed.
