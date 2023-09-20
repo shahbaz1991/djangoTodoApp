@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-et7f=l_%#tvt87lpu9y%3ef-ww%n=9&&52l644+!t9wtnke5*='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1']
+ALLOWED_HOSTS = ['shahbaz1991.pythonanywhere.com']
 
 
 # Application definition
@@ -55,10 +55,12 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'demoDjango.urls'
 
+# 'demoDjango/templates/'
+# os.path.join(BASE_DIR, 'demoDjango/templates/')
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['demoDjango/templates/'],
+        'DIRS': [os.path.join(BASE_DIR, 'demoDjango/templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -77,10 +79,21 @@ WSGI_APPLICATION = 'demoDjango.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+    'default':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'shahbaz1991$djangoTodoApp',
+        'USER': 'shahbaz1991',
+        'PASSWORD': 'mysql@123',
+        'HOST': 'shahbaz1991.mysql.pythonanywhere-services.com',
+        'PORT': '3306',
     }
 }
 
