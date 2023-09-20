@@ -22,8 +22,7 @@ from django.views.generic import RedirectView
 from django.conf.urls import handler404, handler500
 
 urlpatterns = [
-    # path('', RedirectView.as_view(url='todoApp/', permanent=True)),
-    path("", views.home),
+    path('', RedirectView.as_view(url='todoApp/', permanent=True)),
     path("todoApp/", views.home, name="BASE_URL"),
     path("todoApp/login/", include('login.urls'), name="login_url"),
     path("todoApp/register/", include('register.urls'), name="register_url"),
