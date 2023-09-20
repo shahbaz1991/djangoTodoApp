@@ -27,7 +27,8 @@ SECRET_KEY = 'django-insecure-et7f=l_%#tvt87lpu9y%3ef-ww%n=9&&52l644+!t9wtnke5*=
 DEBUG = True
 
 ALLOWED_HOSTS = ['shahbaz1991.pythonanywhere.com']
-
+'127.0.0.1'
+'shahbaz1991.pythonanywhere.com'
 
 # Application definition
 
@@ -122,7 +123,8 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
+# 'UTC'
 
 USE_I18N = True
 
