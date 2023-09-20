@@ -22,7 +22,13 @@
           <li class="nav-item mr-4">
             <a
               class="nav-link active"
-              {% comment %} href="http://127.0.0.1:8000/todoApp/login/" {% endcomment %}
+              {%
+              comment
+              %}
+              href="http://127.0.0.1:8000/todoApp/login/"
+              {%
+              endcomment
+              %}
               data-toggle="modal"
               data-target="#LogOutModal"
               >Log out
@@ -212,7 +218,7 @@
                       </div>
                       <div class="form-group">
                         <label for="id_completed" class="form-check-label"
-                          >Status</label
+                          >Completed</label
                         >
                         <input type="checkbox" name="completed"
                         class="form-check-input" id="id_completed"
@@ -419,7 +425,7 @@
                       </div>
                       <div class="form-group">
                         <label for="id_completed" class="form-check-label"
-                          >Status</label
+                          >Completed</label
                         >
                         <input type="checkbox" name="completed"
                         class="form-check-input" id="id_completed"
@@ -481,9 +487,9 @@
             </button>
           </div>
           <div class="modal-body pt-2 pb-0">
-            <div class="d-flex butB">
-              <h6 class="but mr-2">Name :</h6>
-              <p class="but" style="height:100%">{{user.name}}</p>
+            <div class="d-flex">
+              <h6>Name :</h6>
+              <p>{{user.name}}</p>
             </div>
             <div class="d-flex">
               <h6>Email :</h6>
